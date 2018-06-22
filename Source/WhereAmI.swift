@@ -268,12 +268,14 @@ extension WhereAmI : CLLocationManagerDelegate {
         
         switch status {
         case .authorizedAlways, .authorizedWhenInUse:
-            authorizationHandler?(true);
-        case .notDetermined, .denied, .restricted:
+            authorizationHandler?(true)
+            authorizationHandler = nil;
+        case .notDetermined:
             authorizationHandler?(false)
+        case .denied, .restricted:
+            authorizationHandler?(false)
+            authorizationHandler = nil
         }
-        
-        authorizationHandler = nil;
     }
     
     public func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
